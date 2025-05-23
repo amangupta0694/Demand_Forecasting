@@ -1,0 +1,8 @@
+# Demand_Forecasting/requirements.txt
+# Specifies the Python package dependencies for the project.
+
+omegaconf==2.3.0
+sktime>=0.5.0 # Added sktime dependency (used in abstract_model for smape_loss)
+
+# Note: Ensure versions are compatible with your environment (Spark, Python).
+# You might need to adjust versions based on specific cluster configurations.omegaconf==2.3.0

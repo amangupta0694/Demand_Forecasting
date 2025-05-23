@@ -1,0 +1,50 @@
+# Demand_Forecasting/configs/forecasting_conf.yaml
+# Configuration for the overall forecasting process
+
+# --- Databricks Environment (Adjust if not using Databricks) ---
+catalog: "arc-dbx-uc" # Default catalog name
+db: "demand_forecast" # Default database name
+
+# --- Data Sources & Destinations ---
+# These can be full table names or paths
+train_data: "${forecasting.catalog}.${forecasting.db}.demand_forecast_train"
+scoring_data: "${forecasting.catalog}.${forecasting.db}.demand_forecast_train" # Path/table for future data to score
+evaluation_output: "${forecasting.catalog}.${forecasting.db}.daily_evaluation_output"
+scoring_output: "${forecasting.catalog}.${forecasting.db}.daily_scoring_output"
+# model_output is handled by MLflow logging
+
+# --- MLflow Configuration ---
+experiment_path: "/Shared/prophet_experiment" # Path for MLflow experiment
+use_case_name: "prophet_demand" # Tag/name for the use case
+
+# --- Data Schema ---
+store_id: "store_nbr"
+item_id: "item_nbr"
+group_id: "group_id" # Column identifying individual time series (store_nbr + '_' + item_nbr)
+date_col: "date"        # Column containing date/timestamp information
+target: "unit_sales"     # Column containing the target variable to forecast
+
+
+extra_regressors: ["onpromotion"]
+# --- Forecasting Parameters ---
+freq: "D"             # Frequency of the time series (D=Daily, W=Weekly, M=Monthly)
+prediction_length: 7 # Number of time steps to forecast into the future
+
+# --- Evaluation Parameters ---
+backtest_length: 30   # Number of time steps in the training data to use for backtesting
+stride: 7             # Step size (in time steps) for sliding window in backtesting
+metric: "smape"       # Primary metric for model evaluation (e.g., smape, mape, rmse)
+
+# --- Model Selection ---
+active_models: ["SKTimeProphet"] # List of model classes (from registry) to run
+
+# --- Run Configuration ---
+accelerator: "cpu"    # Accelerator to use ('cpu' or 'gpu')
+
+# --- Feature Flags ---
+data_quality_check: False # Enable/disable data quality checks
+resample: False       # Enable/disable resampling (Prophet handles frequency internally)
+
+# --- Data Quality Specific (if check enabled) ---
+missing_threshold: 0.2 # Maximum allowed proportion of missing values in target column per series
+

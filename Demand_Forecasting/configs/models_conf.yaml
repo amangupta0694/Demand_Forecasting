@@ -1,0 +1,21 @@
+# Demand_Forecasting/configs/models_conf.yaml
+# Contains parameters specific to individual forecasting models.
+# Keys should match the model names/classes used in the registry and active_models list.
+
+SKTimeProphet: # Matches the class name used in active_models
+  # Prophet-specific hyperparameters
+  changepoint_prior_scale: 0.05
+  seasonality_mode: multiplicative # 'additive' or 'multiplicative'
+  holidays: null # Set to a pandas DataFrame with 'holiday' and 'ds' columns if needed, or path to holidays file
+  growth: 'linear' # 'linear' or 'logistic' (logistic requires 'cap' column in data)
+  daily_seasonality: False # Enable/disable daily seasonality component
+  weekly_seasonality: True # Enable/disable weekly seasonality component
+  yearly_seasonality: True # Enable/disable yearly seasonality component
+  interval_width: 0.95 # Width of the uncertainty intervals
+
+# Add configurations for other models here, e.g.:
+# ARIMA:
+#   p: 5
+#   d: 1
+#   q: 0
+
